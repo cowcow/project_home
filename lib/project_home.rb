@@ -12,6 +12,10 @@ module ProjectHome
     HOME
   end
   
+  def self.require( path )
+    Kernel::require HOME+path
+  end
+  
   def self.config()
     YAML.load_file( HOME+'home.yaml' )
   end
