@@ -6,7 +6,7 @@ require_relative "project_home/version"
 
 module ProjectHome
   
-  HOME = [$0,__FILE__].lazy.map{ |file|
+  HOME = [Dir.pwd,$0,__FILE__].lazy.map{ |file|
     Pathname(file).dirname.expand_path.ascend.find{ |path|
       (path+'home.yaml').exist?
     }.freeze
