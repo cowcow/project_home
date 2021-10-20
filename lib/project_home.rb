@@ -10,7 +10,7 @@ module ProjectHome
   def self.home
     @home ||= [Dir.pwd, $PROGRAM_NAME, __FILE__].lazy.map { |file|
       Pathname(file).dirname.expand_path.ascend.find do |path|
-        format('%<path>s%<yaml>s', path: path, yaml: 'home.yaml').exist?
+        File.exist?(format('%<path>s%<yaml>s', path: path, yaml: 'home.yaml'))
       end.freeze
     }.select { |path| path }.first
   end
