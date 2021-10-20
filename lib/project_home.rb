@@ -9,9 +9,9 @@ require_relative 'project_home/version'
 module ProjectHome
   def self.home
     @home ||= begin
-      homepath = [Dir.pwd, $PROGRAM_NAME, __FILE__].lazy.map { |file|
-        Pathname(file).dirname.expand_path.ascend.find do |path|
-          File.exist?(format('%<path>s%<yaml>s', path: path, yaml: 'home.yaml'))
+      homepath = [Dir.pwd, $PROGRAM_NAME, File.dirname(__FILE__)].lazy.map { |file|
+        Pathname(file).expand_path.ascend.find do |path|
+          File.exist?(format('%<path>s/%<yaml>s', path: path, yaml: 'home.yaml'))
         end.freeze
       }.select { |path| path }.first
       Pathname(homepath)
@@ -38,6 +38,6 @@ module ProjectHome
   end
 
   def self.config
-    YAML.load_file(format('%<path>s%<yaml>s', path: ProjectHome.home, yaml: 'home.yaml'))
+    YAML.load_file(format('%<path>s/%<yaml>s', path: ProjectHome.home, yaml: 'home.yaml'))
   end
 end
