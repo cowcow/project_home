@@ -8,11 +8,14 @@ require_relative 'project_home/version'
 # ProjectHome
 module ProjectHome
   def self.home
-    @home ||= [Dir.pwd, $PROGRAM_NAME, __FILE__].lazy.map { |file|
-      Pathname(file).dirname.expand_path.ascend.find do |path|
-        File.exist?(format('%<path>s%<yaml>s', path: path, yaml: 'home.yaml'))
-      end.freeze
-    }.select { |path| path }.first
+    @home ||= begin
+      homepath = [Dir.pwd, $PROGRAM_NAME, __FILE__].lazy.map { |file|
+        Pathname(file).dirname.expand_path.ascend.find do |path|
+          File.exist?(format('%<path>s%<yaml>s', path: path, yaml: 'home.yaml'))
+        end.freeze
+      }.select { |path| path }.first
+      Pathname(homepath)
+    end
   end
 
   def self.const_missing(id)
